@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.ClipboardManager", "RexMingla.ClipboardManager\RexMingla.ClipboardManager.csproj", "{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.ClipboardManager.Console", "RexMingla.ClipboardManager.Console\RexMingla.ClipboardManager.Console.csproj", "{4444AFC2-D6AA-4837-89BB-3C2CC55B5159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.ClipboardManager.Tests", "RexMingla.ClipboardManager.Tests\RexMingla.ClipboardManager.Tests.csproj", "{D4BE164C-8642-4394-93FB-3140B2703B59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.GlobalHotKey", "RexMingla.GlobalHotKey\RexMingla.GlobalHotKey.csproj", "{D03283D5-0919-4191-82C8-F7A007D21268}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.GlobalHotKey.Console", "RexMingla.GlobalHotKey.Console\RexMingla.GlobalHotKey.Console.csproj", "{CF553002-9026-4B5D-AD61-AA73A609BCAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4444AFC2-D6AA-4837-89BB-3C2CC55B5159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4444AFC2-D6AA-4837-89BB-3C2CC55B5159}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4444AFC2-D6AA-4837-89BB-3C2CC55B5159}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4444AFC2-D6AA-4837-89BB-3C2CC55B5159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4BE164C-8642-4394-93FB-3140B2703B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BE164C-8642-4394-93FB-3140B2703B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BE164C-8642-4394-93FB-3140B2703B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4BE164C-8642-4394-93FB-3140B2703B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03283D5-0919-4191-82C8-F7A007D21268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03283D5-0919-4191-82C8-F7A007D21268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03283D5-0919-4191-82C8-F7A007D21268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03283D5-0919-4191-82C8-F7A007D21268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
