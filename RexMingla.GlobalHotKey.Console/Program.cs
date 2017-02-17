@@ -12,8 +12,8 @@ namespace RexMingla.GlobalHotKey.Console
             container.Install(new WindsorInstaller());
 
             var manager = container.Resolve<IHotKeyManager>();
-            manager.Register(new Hotkey(1, ModifierKeys.Control | ModifierKeys.Shift, Key.C, OnCtrlShiftC));
-            manager.Register(new Hotkey(2, ModifierKeys.Control, Key.B, OnCtrlShiftB));
+            manager.Register(new HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.C, OnCtrlShiftC));
+            manager.Register(new HotKey(ModifierKeys.Control, Key.B, OnCtrlShiftB));
 
             while (true)
             {

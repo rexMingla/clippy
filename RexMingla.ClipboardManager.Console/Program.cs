@@ -14,7 +14,7 @@ namespace RexMingla.ClipboardManager.Console
             notifier.OnClipboardChange += OnChange;
             var manager = container.Resolve<IClipboardManager>();
 
-            manager.SetClipboardContent(manager.GetClipboardContent());
+            //manager.SetClipboardContent(manager.GetClipboardContent());
             while (true)
             {
             }

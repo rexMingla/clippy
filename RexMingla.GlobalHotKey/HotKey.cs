@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace RexMingla.GlobalHotKey
 {
     // adapted from https://gitlab.com/jbjurstam/GlobalHotkeysWPF/blob/master/GlobalHotkeys/GlobalHotkeys/GlobalHotkeys.cs
-    public class Hotkey
+    public class HotKey
     {
+        private static readonly ISet<int> _usedIds = new HashSet<int>();
+
         private int _key;
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public ModifierKeys Modifiers { get; private set; }
         public Action Action { get; private set; }
         public int VirtualKey { get { return _key; } }
@@ -22,16 +26,30 @@ namespace RexMingla.GlobalHotKey
                 _key = KeyInterop.VirtualKeyFromKey(value);
             }
         }
-        public Hotkey(int id, ModifierKeys modifiers, Key key, Action action)
+
+        public HotKey(ModifierKeys modifiers, Key key, Action action) : this(modifiers, key, action, GetNextId())
+        {
+        }
+
+        public HotKey(ModifierKeys modifiers, Key key, Action action, int id)
         {
             Id = id;
             Modifiers = modifiers;
             Key = key;
             Action = action;
+
+            _usedIds.Add(id);
         }
+
         public override string ToString()
         {
-            return string.Format("Id: '{1}'{0}Modifiers: '{2}'{0}Key: '{3}'{0}Action: '{4}'{0}", Environment.NewLine, Id, Modifiers, Key, Action.Method.Name);
+            return string.Format($"<HotKey Id:{Id} Modifiers:{Modifiers} Key:{Key} Action: {Action.Method.Name}>");
+        }
+
+        // don't really want this here. 
+        private static int GetNextId()
+        {
+            return _usedIds.Any() ? _usedIds.Max() + 1 : 0;
         }
     }
 }

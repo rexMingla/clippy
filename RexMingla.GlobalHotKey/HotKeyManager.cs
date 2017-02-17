@@ -1,208 +1,96 @@
 ﻿using Common.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace RexMingla.GlobalHotKey
 {
-    public class HotKeyManager : IDisposable, IHotKeyManager
+    // based on https://github.com/kirmir/GlobalHotKey/blob/master/GlobalHotKey/HotKeyManager.cs
+    public class HotKeyManager : IHotKeyManager, IDisposable
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static HotKeyManager _manager;
+        private readonly HwndSource _windowHandleSource;
 
-        private HotKeyManager()
+        private readonly List<HotKey> _hotKeys;
+
+        public HotKeyManager(Window window)
         {
-            HotKeyListener.Start();
+            var windowHandle = new WindowInteropHelper(window).Handle;
+            _windowHandleSource = HwndSource.FromHwnd(windowHandle);
+            _windowHandleSource.AddHook(HwndHook);
+
+            _hotKeys = new List<HotKey>();
         }
 
-        public static HotKeyManager GetManager()
+        public void Register(HotKey hotKey)
         {
-            if (_manager == null)
+            // Check if specified hot key is already registered.
+            if (_hotKeys.SingleOrDefault(k => (k.Key == hotKey.Key && k.Modifiers == hotKey.Modifiers) || k.Id == hotKey.Id) != null)
             {
-                _manager = new HotKeyManager();
+                throw new ArgumentException($"The specified hot key {hotKey} is already registered.");
             }
-            return _manager;
+            
+            // Register new hot key.
+            if (!WinApi.RegisterHotKey(_windowHandleSource.Handle, hotKey.Id, hotKey.Key, hotKey.Modifiers))
+            {
+                throw new Win32Exception(Marshal.GetLastWin32Error(), $"Can't register the hot key {hotKey}.");
+            }
+            _hotKeys.Add(hotKey);
         }
 
-        public void Register(Hotkey key)
+        /// <summary>
+        /// Unregisters previously registered hot key.
+        /// </summary>
+        /// <param name="hotKey">The registered hot key.</param>
+        public void Unregister(HotKey hotKey)
         {
-            HotKeyListener.Add(key);
+            var matchedHotKey = _hotKeys.SingleOrDefault(k => k.Id == hotKey.Id);
+            if (matchedHotKey == null)
+            {
+                throw new ArgumentException("The specified hot key is was not registered.");
+            }
+            WinApi.UnregisterHotKey(_windowHandleSource.Handle, matchedHotKey.Id);
+            _hotKeys.Remove(matchedHotKey);
         }
 
-        public void Unregister(Hotkey key)
-        {
-            HotKeyListener.Remove(key);
-        }
-
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
-            HotKeyListener.Stop();
+            // Unregister hot keys.
+            foreach (var hotKey in _hotKeys)
+            {
+                WinApi.UnregisterHotKey(_windowHandleSource.Handle, hotKey.Id);
+            }
+
+            _windowHandleSource.RemoveHook(HwndHook);
+            _windowHandleSource.Dispose();
         }
 
-        private class OperationAndKey
+        private IntPtr HwndHook(IntPtr handle, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            public bool IsAdd { get; set; }
-            public Hotkey Key { get; set; }
-        }
-
-        public class HotKeyListener : Form, IDisposable
-        {
-            private static readonly BlockingCollection<OperationAndKey> Queue = new BlockingCollection<OperationAndKey>();
-
-            // static instance of this form
-            private static HotKeyListener _instance;
-
-            readonly List<Hotkey> _hotkeys = new List<Hotkey>();
-
-            private readonly HwndSource _windowHandleSource;
-
-
-            // start listening
-            public static void Start()
+            if (message == WinApi.WmHotKey)
             {
-                var t = new Thread(new ParameterizedThreadStart(x => Application.Run(new HotKeyListener())));
-                t.SetApartmentState(ApartmentState.STA); // give the [STAThread] attribute
-                t.Start();
-            }
-
-            public static void Stop()
-            {
-                _instance.Invoke(new MethodInvoker(_instance.Close));
-
-                _instance.Dispose();
-
-                _instance = null;
-            }
-
-
-            // on load: (hide this window)
-            protected override void SetVisibleCore(bool value)
-            {
-                _instance = this;
-                base.SetVisibleCore(false);
-            }
-
-            public HotKeyListener()
-            {
-                _windowHandleSource = new HwndSource(new HwndSourceParameters());
-                _windowHandleSource.AddHook(HwndHook);
-
-                CreateHandle();
-            }
-
-            public IReadOnlyCollection<Hotkey> Items
-            {
-                get
+                var hotKey = _hotKeys.SingleOrDefault(k => k.Id == wParam.ToInt32());
+                if (hotKey == null)
                 {
-                    return _hotkeys.AsReadOnly();
+                    _log.Trace($"Hot key with id {wParam.ToInt32()} ignored as it is not being listened to.");
+                    return IntPtr.Zero;
                 }
+                _log.Trace($"Calling action {hotKey.Action.Method.Name}");
+                hotKey.Action();
+                handled = true;
+                return new IntPtr(1);
             }
-
-            public static void Add(Hotkey hotkey)
-            {
-                Queue.Add(new OperationAndKey { Key = hotkey, IsAdd = true });
-            }
-
-            public static void Remove(Hotkey hotkey)
-            {
-                Queue.Add(new OperationAndKey { Key = hotkey, IsAdd = false });
-            }
-
-            public void Remove(params int[] hotkeyIds)
-            {
-                foreach (var hotkeyId in hotkeyIds)
-                {
-                    Remove(_instance._hotkeys.FirstOrDefault(h => h.Id == hotkeyId));
-                }
-            }
-
-            void Register(Hotkey hotkey)
-            {
-                _log.Debug($"Registering hot key {hotkey}");           
-                var existingHotKey = _hotkeys.FirstOrDefault(h => h.Id == hotkey.Id);
-                if (existingHotKey != null)
-                {
-                    Remove(existingHotKey);
-                }
-                RegisterHotKey(Handle, hotkey.Id, (uint)hotkey.Modifiers, hotkey.VirtualKey);
-                _hotkeys.Add(hotkey);
-            }
-
-            void Unregister(Hotkey hotkey)
-            {
-                _log.Debug($"Unregistering hot key {hotkey}");
-                UnregisterHotKey(Handle, hotkey.Id);
-                _hotkeys.Remove(hotkey);
-            }
-
-            enum WM_Case
-            {
-                Hotkey = 0x0312         //WM_HOTKEY
-            }
-
-            IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-            {
-                while(Queue.Any())
-                {
-                    var item = Queue.Take();
-                    if (item.IsAdd)
-                    {
-                        Register(item.Key);
-                    } else
-                    {
-                        Unregister(item.Key);
-                    }
-                }
-
-                switch (msg)
-                {
-                    case (int)WM_Case.Hotkey:
-                        var hotkeyId = wParam.ToInt32();
-                        var hotkey = _hotkeys.SingleOrDefault(h => h.Id == hotkeyId);
-                        if (hotkey != null)
-                            hotkey.Action();
-                        break;
-                }
-                return IntPtr.Zero;
-            }
-
-            [DllImport("user32.dll")]
-            static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, int vk);
-
-            [DllImport("user32.dll")]
-            static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-            public override string ToString()
-            {
-                StringBuilder sb = new StringBuilder();
-                _hotkeys.ForEach(h => sb.Append(h).Append(Environment.NewLine));
-                return sb.ToString();
-            }
-
-            //Cleanup and implement IDisposable
-            void Unhook()
-            {
-                _windowHandleSource.RemoveHook(HwndHook);
-                _hotkeys.ForEach(h => Unregister(h));
-            }
-            public void Dispose()
-            {
-                Unhook();
-                GC.SuppressFinalize(this);
-            }
-
-            ~HotKeyListener()
-            {
-                Unhook();
-            }
+            return IntPtr.Zero;
         }
     }
 }

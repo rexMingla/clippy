@@ -2,7 +2,7 @@
 {
     public interface IHotKeyManager
     {
-        void Register(Hotkey key);
-        void Unregister(Hotkey key);
+        void Register(HotKey key);
+        void Unregister(HotKey key);
     }
 }

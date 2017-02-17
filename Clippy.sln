@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.ClipboardManager.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.GlobalHotKey", "RexMingla.GlobalHotKey\RexMingla.GlobalHotKey.csproj", "{D03283D5-0919-4191-82C8-F7A007D21268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.GlobalHotKey.Console", "RexMingla.GlobalHotKey.Console\RexMingla.GlobalHotKey.Console.csproj", "{CF553002-9026-4B5D-AD61-AA73A609BCAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.Clippy.WpfApplication", "RexMingla.Clippy.WpfApplication\RexMingla.Clippy.WpfApplication.csproj", "{57A9621D-29C8-4029-B891-AA5848A3FF0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{D03283D5-0919-4191-82C8-F7A007D21268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D03283D5-0919-4191-82C8-F7A007D21268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D03283D5-0919-4191-82C8-F7A007D21268}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF553002-9026-4B5D-AD61-AA73A609BCAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

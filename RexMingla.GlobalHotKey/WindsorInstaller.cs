@@ -1,6 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using System.Windows;
 
 namespace RexMingla.GlobalHotKey
 {
@@ -9,7 +10,11 @@ namespace RexMingla.GlobalHotKey
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<IHotKeyManager>().Instance(HotKeyManager.GetManager()).LifestyleSingleton());
+                Component.For<IHotKeyManager>()
+                    .ImplementedBy<HotKeyManager>()
+                    .DependsOn(
+                        Dependency.OnComponent(typeof(Window), "window")).LifestyleSingleton()
+            );
         }
     }
 }
