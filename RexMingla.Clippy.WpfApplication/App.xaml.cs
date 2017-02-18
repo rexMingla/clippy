@@ -17,22 +17,17 @@ namespace RexMingla.Clippy.WpfApplication
             _container = new WindsorContainer();
             _container.Install(new WindsorInstaller());
             _container.Install(new GlobalHotKey.WindsorInstaller());
+            _container.Install(new ClipboardManager.WindsorInstaller());
+            _container.Install(new WindowManager.WindsorInstaller());
 
             var shell = _container.Resolve<IShell>();
             shell.Run();
-            var hotKeyManager = _container.Resolve<GlobalHotKey.IHotKeyManager>();
-            var hotKey = new GlobalHotKey.HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.A, OnKeyPress);
-            hotKeyManager.Register(hotKey);
-            hotKeyManager.Register(new GlobalHotKey.HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.B, OnKeyPress));
-            hotKeyManager.Unregister(hotKey);
-            hotKeyManager.Register(new GlobalHotKey.HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.C, OnKeyPress));
-            
-            _container.Release(shell);
-        }
 
-        private static void OnKeyPress()
-        {
-            System.Console.WriteLine("OnKeyPress()");
+            var orchestrator = _container.Resolve<IClipboardOrchestrator>();
+            orchestrator.Start();
+
+            _container.Release(shell);
+            _container.Release(orchestrator);
         }
     }
 }

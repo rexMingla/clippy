@@ -79,10 +79,13 @@ namespace RexMingla.GlobalHotKey
         {
             if (message == WinApi.WmHotKey)
             {
-                var hotKey = _hotKeys.SingleOrDefault(k => k.Id == wParam.ToInt32());
+                var key = KeyInterop.KeyFromVirtualKey(((int)lParam >> 16) & 0xFFFF);
+                var modifiers = (ModifierKeys)((int)lParam & 0xFFFF);
+
+                var hotKey = _hotKeys.SingleOrDefault(k => k.Key == key && k.Modifiers == modifiers);
                 if (hotKey == null)
                 {
-                    _log.Trace($"Hot key with id {wParam.ToInt32()} ignored as it is not being listened to.");
+                    _log.Trace($"Hot key with {key} keys and {modifiers} modifiers ignored as it is not being listened to.");
                     return IntPtr.Zero;
                 }
                 _log.Trace($"Calling action {hotKey.Action.Method.Name}");

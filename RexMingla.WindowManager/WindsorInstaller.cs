@@ -2,16 +2,15 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
-namespace RexMingla.Clippy.WpfApplication
+namespace RexMingla.WindowManager
 {
     public class WindsorInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<MainWindow>().Named("window").LifestyleSingleton(),
-                Component.For<IClipboardOrchestrator>().ImplementedBy<ClipboardOrchestrator>(),
-                Component.For<IShell>().ImplementedBy<Shell>()
+                Component.For<IWindowManager>().ImplementedBy<WindowManager>(),
+                Component.For<IKeySender>().ImplementedBy<KeySender>()
             );
         }
     }

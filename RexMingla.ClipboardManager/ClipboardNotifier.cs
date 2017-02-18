@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -66,7 +65,7 @@ namespace RexMingla.ClipboardManager
             {
                 _instance.Invoke(new MethodInvoker(() =>
                 {
-                    ChangeClipboardChain(_instance.Handle, nextClipboardViewer);
+                    WinApi.ChangeClipboardChain(_instance.Handle, nextClipboardViewer);
                 }));
                 _instance.Invoke(new MethodInvoker(_instance.Close));
 
@@ -82,38 +81,25 @@ namespace RexMingla.ClipboardManager
 
                 _instance = this;
 
-                nextClipboardViewer = SetClipboardViewer(_instance.Handle);
+                nextClipboardViewer = WinApi.SetClipboardViewer(_instance.Handle);
 
                 base.SetVisibleCore(false);
             }
-
-            [DllImport("User32.dll", CharSet = CharSet.Auto)]
-            private static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);
-
-            [DllImport("User32.dll", CharSet = CharSet.Auto)]
-            private static extern bool ChangeClipboardChain(IntPtr hWndRemove, IntPtr hWndNewNext);
-
-            [DllImport("user32.dll", CharSet = CharSet.Auto)]
-            private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
-
-            // defined in winuser.h
-            const int WM_DRAWCLIPBOARD = 0x308;
-            const int WM_CHANGECBCHAIN = 0x030D;
 
             protected override void WndProc(ref Message m)
             {
                 switch (m.Msg)
                 {
-                    case WM_DRAWCLIPBOARD:
+                    case WinApi.WM_DRAWCLIPBOARD:
                         ClipChanged();
-                        SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                        WinApi.SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
                         break;
 
-                    case WM_CHANGECBCHAIN:
+                    case WinApi.WM_CHANGECBCHAIN:
                         if (m.WParam == nextClipboardViewer)
                             nextClipboardViewer = m.LParam;
                         else
-                            SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                            WinApi.SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
                         break;
 
                     default:

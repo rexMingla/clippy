@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -79,9 +80,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClipboardOrchestrator.cs" />
+    <Compile Include="ClippyMenu.xaml.cs">
+      <DependentUpon>ClippyMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IClipboardOrchestrator.cs" />
     <Compile Include="IShell.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="WindsorInstaller.cs" />
+    <Page Include="ClippyMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,9 +134,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RexMingla.ClipboardManager\RexMingla.ClipboardManager.csproj">
+      <Project>{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}</Project>
+      <Name>RexMingla.ClipboardManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RexMingla.GlobalHotKey\RexMingla.GlobalHotKey.csproj">
       <Project>{d03283d5-0919-4191-82c8-f7a007d21268}</Project>
       <Name>RexMingla.GlobalHotKey</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RexMingla.WindowManager\RexMingla.WindowManager.csproj">
+      <Project>{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}</Project>
+      <Name>RexMingla.WindowManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

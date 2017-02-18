@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RexMingla.Clippy.WpfApplication
+﻿namespace RexMingla.Clippy.WpfApplication
 {
     public class Shell : IShell
     {

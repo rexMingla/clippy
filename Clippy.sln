@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.GlobalHotKey", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.Clippy.WpfApplication", "RexMingla.Clippy.WpfApplication\RexMingla.Clippy.WpfApplication.csproj", "{57A9621D-29C8-4029-B891-AA5848A3FF0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RexMingla.WindowManager", "RexMingla.WindowManager\RexMingla.WindowManager.csproj", "{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A9621D-29C8-4029-B891-AA5848A3FF0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{512F4478-2F3E-4E2C-8BB3-C3F0259B5298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
