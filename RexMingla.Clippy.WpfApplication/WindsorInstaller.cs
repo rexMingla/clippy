@@ -2,6 +2,7 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Hardcodet.Wpf.TaskbarNotification;
+using RexMingla.Clippy.WpfApplication.translators;
 using System.Windows;
 
 namespace RexMingla.Clippy.WpfApplication
@@ -11,7 +12,18 @@ namespace RexMingla.Clippy.WpfApplication
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<Splash>().Named("splash").LifestyleSingleton(),
+                // TODO: change to use windsor factory..
+                Component.For<ITranslator>().ImplementedBy<TextTranslator>().Named("textTranslator"),
+                Component.For<ITranslator>().ImplementedBy<FileTranslator>().Named("fileTranslator"),
+                Component.For<ITranslator>().ImplementedBy<ImageTranslator>().Named("imageTranslator"),
+                Component.For<MenuItemTranslator>().Named("menuItemTranslator")
+                    .DependsOn(
+                        Dependency.OnComponentCollection("translators", "textTranslator", "fileTranslator", "imageTranslator")
+                    ),
+                Component.For<Splash>().Named("splash")
+                    .DependsOn(
+                        Dependency.OnComponent("translator", "menuItemTranslator")
+                    ).LifestyleSingleton(),
                 //Component.For<MainWindow>().Named("window").LifestyleSingleton(),
                 Component.For<TaskbarIcon>().LifestyleSingleton(),
                 Component.For<IClipboardOrchestrator>().ImplementedBy<ClipboardOrchestrator>(),

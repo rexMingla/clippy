@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardContentConverter.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="IConfigManager.cs" />

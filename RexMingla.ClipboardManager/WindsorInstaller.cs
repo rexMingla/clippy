@@ -13,7 +13,7 @@ namespace RexMingla.ClipboardManager
                 Component.For<IClipboardNotifier>().Instance(ClipboardNotifier.GetNotifier()).LifestyleSingleton(),
                 Component.For<IClipboardStore>().ImplementedBy<ClipboardStore>().OnCreate(s =>
             {
-                ClipboardNotifier.GetNotifier().OnClipboardChange += s.InsertItem;
+                container.Resolve<IClipboardNotifier>().OnClipboardChange += s.InsertItem;
             }));
         }
     }

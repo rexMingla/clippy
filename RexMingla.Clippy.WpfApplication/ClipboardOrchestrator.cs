@@ -20,8 +20,8 @@ namespace RexMingla.Clippy.WpfApplication
         private readonly IClipboardManager _clipboardManager;
         private readonly IWindowManager _windowManager;
         private readonly IKeySender _keySender;
-        private readonly IConfigManager _configManager;
         private readonly IClipboardStore _clipboardStore;
+        private readonly IConfigManager _configManager;
         private readonly IClipboardNotifier _clipboardNotifier;
 
         private readonly HotKey _showMenuHotKey;
@@ -48,8 +48,8 @@ namespace RexMingla.Clippy.WpfApplication
 
             _showMenuHotKey = new HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.V, OnShowContextMenu);
 
+            _configManager.OnClipboardHistoryChanged += _clipboardStore.SetItems;
             _configManager.LoadConfig();
-            _clipboardStore.SetItems(_configManager.Config.RecentlyUsed);
         }
 
         public void Start()
@@ -106,7 +106,8 @@ namespace RexMingla.Clippy.WpfApplication
 
         public void Dispose()
         {
-            _configManager.Config.RecentlyUsed = _clipboardStore.GetItems();
+            _configManager.OnClipboardHistoryChanged -= _clipboardStore.SetItems;
+            _configManager.SetClipboardHistory(_clipboardStore.GetItems());
             _configManager.SaveConfig();
         }
     }

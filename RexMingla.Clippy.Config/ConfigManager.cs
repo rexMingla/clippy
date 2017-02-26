@@ -2,9 +2,8 @@
 using Newtonsoft.Json;
 using RexMingla.ClipboardManager;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace RexMingla.Clippy.Config
@@ -14,13 +13,17 @@ namespace RexMingla.Clippy.Config
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _configFile;
+        private readonly JsonConverter[] _converters;
+        private readonly Config _config;
 
-        public Config Config { get; set; }
+        public event OnClipboardHistoryChangedHandler OnClipboardHistoryChanged;
+        public event OnConfigSettingsChangedHandler OnClipboardSettingsChanged;
 
-        public ConfigManager(string configFile)
+        public ConfigManager(string configFile, params JsonConverter[] converters)
         {
             _configFile = configFile;
-            Config = Config.DefaultConfig;
+            _converters = converters;
+            _config = Config.DefaultConfig;
         }
 
         public void SaveConfig()
@@ -28,7 +31,7 @@ namespace RexMingla.Clippy.Config
             _log.Debug($"Saving to config file {_configFile}");
             try
             {
-                var json = JsonConvert.SerializeObject(Config, Formatting.Indented, new ImageConverter());
+                var json = JsonConvert.SerializeObject(_config, Formatting.Indented, _converters);
                 File.WriteAllText(_configFile, json);
             }
             catch (Exception ex)
@@ -43,8 +46,8 @@ namespace RexMingla.Clippy.Config
             try
             {
                 var json = File.ReadAllText(_configFile);
-                Config = JsonConvert.DeserializeObject<Config>(json);
-                Config.RecentlyUsed.ForEach(UpdateBitmapFromBase64);
+                var config = JsonConvert.DeserializeObject<Config>(json, _converters);
+                SetConfig(config);
             }
             catch (Exception ex)
             {
@@ -52,16 +55,31 @@ namespace RexMingla.Clippy.Config
             }
         }
 
-        private void UpdateBitmapFromBase64(ClipboardContent content)
+        public void SetClipboardHistory(List<ClipboardContent> content)
         {
-            var bitmap = content.Data.FirstOrDefault(d => d.DataFormat == "Bitmap");
-            if (bitmap == null)
+            if (_config.ClipboardHistory != content)
+            {
+                _config.ClipboardHistory = content;
+                OnClipboardHistoryChanged?.Invoke(content);
+            }
+        }
+
+        public void SetConfigSettings(Settings settings)
+        {
+            if (_config.Settings != settings)
+            {
+                _config.Settings = settings;
+                OnClipboardSettingsChanged?.Invoke(settings);
+            }
+        }
+
+        private void SetConfig(Config config) {
+            if (config == null)
             {
                 return;
             }
-            var m = new MemoryStream(Convert.FromBase64String((string)bitmap.Content));
-            bitmap.Content = Bitmap.FromStream(m);
+            SetConfigSettings(config.Settings);
+            SetClipboardHistory(config.ClipboardHistory);
         }
-
     }
 }

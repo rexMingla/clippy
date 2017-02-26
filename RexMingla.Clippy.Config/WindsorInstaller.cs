@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
-using System;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Newtonsoft.Json;
 
 namespace RexMingla.Clippy.Config
 {
@@ -17,8 +17,11 @@ namespace RexMingla.Clippy.Config
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
+                Component.For<JsonConverter>().ImplementedBy<ImageConverter>().Named("imageConverter"),
+                Component.For<JsonConverter>().ImplementedBy<ClipboardContentConverter>().Named("clipboardConverter"),
                 Component.For<IConfigManager>().ImplementedBy<ConfigManager>().DependsOn(
-                    Dependency.OnConfigValue("configFile", _configFile)
+                    Dependency.OnConfigValue("configFile", _configFile),
+                    Dependency.OnComponentCollection("converters", "clipboardConverter")
                 ).LifestyleTransient());
         }
     }

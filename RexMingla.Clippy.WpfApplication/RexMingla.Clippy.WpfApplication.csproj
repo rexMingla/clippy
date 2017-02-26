@@ -92,12 +92,16 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IClipboardOrchestrator.cs" />
     <Compile Include="IShell.cs" />
-    <Compile Include="MenuItemTranslator.cs" />
+    <Compile Include="translators\ITranslator.cs" />
+    <Compile Include="translators\MenuItemTranslator.cs" />
     <Compile Include="NotifyIconViewModel.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="translators\ImageTranslator.cs" />
+    <Compile Include="translators\FileTranslator.cs" />
+    <Compile Include="translators\TextTranslator.cs" />
     <Compile Include="WindsorInstaller.cs" />
     <Page Include="ClippyMenu.xaml">
       <SubType>Designer</SubType>

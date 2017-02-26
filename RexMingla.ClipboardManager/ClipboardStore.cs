@@ -10,29 +10,36 @@ namespace RexMingla.ClipboardManager
 
         private readonly List<ClipboardContent> _data;
 
-        public ClipboardStore()
+        public ClipboardStore(int maxSize = 100)
         {
-            _data = new List<ClipboardContent>();
+            _data = new List<ClipboardContent>(maxSize);
         }
 
         public void SetItems(List<ClipboardContent> contents)
         {
+            if (contents == null)
+            {
+                return;
+            }
             _data.Clear();
             contents.ForEach(InsertItem);
         }
 
         public void InsertItem(ClipboardContent content)
         {
-            var sanitizedContent = content;
-            sanitizedContent.Data.RemoveAll(d => d.Content as System.IO.MemoryStream != null); // remove for purposes of serialization
-            _log.Info($"Adding item {sanitizedContent}. item count {_data.Count}");
-            if (!sanitizedContent.HasData())
+            _log.Info($"Adding item {content}. item count {_data.Count}");
+            if (!content.HasData())
             {
                 _log.Warn($"No data found. Item {content} ignored.");
                 return;
             }
-            _data.Remove(sanitizedContent);
-            _data.Insert(0, sanitizedContent);
+            _data.Remove(content);
+            if (_data.Capacity == _data.Count)
+            {
+                _log.Warn($"At capacity {_data.Capacity} items, removing last item");
+                _data.RemoveAt(_data.Count - 1);
+            }
+            _data.Insert(0, content);
         }
 
         public List<ClipboardContent> GetItems()

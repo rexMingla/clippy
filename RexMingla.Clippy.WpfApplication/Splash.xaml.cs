@@ -16,13 +16,15 @@ namespace RexMingla.Clippy.WpfApplication
     {
         private readonly IClipboardStore _store;
         private readonly IClipboardManager _manager;
+        private readonly MenuItemTranslator _translator;
 
-        public Splash(IClipboardStore store, IClipboardManager manager)
+        public Splash(IClipboardStore store, IClipboardManager manager, MenuItemTranslator translator)
         {
             InitializeComponent();
 
             _store = store;
             _manager = manager;
+            _translator = translator;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -57,7 +59,7 @@ namespace RexMingla.Clippy.WpfApplication
 
         private MenuItem CreateMenuItem(ClipboardContent content)
         {
-            var item = content.ToMenuItem();
+            var item = _translator.ToMenuItem(content);
             item.Click += OnSetClipboardContent;
             return item;
         }

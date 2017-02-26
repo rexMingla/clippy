@@ -5,21 +5,27 @@ namespace RexMingla.Clippy.Config
 {
     public class Config
     {
-        public Metadata Metadata;
-        public List<ClipboardContent> RecentlyUsed;
+        public Settings Settings { get; set; }
+        public List<ClipboardContent> ClipboardHistory { get; set; }
+
+        public Config()
+        {
+            Settings = new Settings();
+            ClipboardHistory = new List<ClipboardContent>();
+        }
 
         public static Config DefaultConfig = new Config
         {
-            Metadata = new Metadata
+            Settings = new Settings
             {
                 MaxDisplayedItems = 100,
                 ItemsPerGroup = 10
             },
-            RecentlyUsed = new List<ClipboardContent>()
+            ClipboardHistory = new List<ClipboardContent>()
         };
     }
 
-    public class Metadata
+    public class Settings
     {
         public int MaxDisplayedItems;
         public int ItemsPerGroup;
