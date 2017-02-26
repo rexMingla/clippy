@@ -7,7 +7,7 @@ namespace RexMingla.GlobalHotKey
     /// <summary>
     /// used from https://github.com/kirmir/GlobalHotKey/blob/master/GlobalHotKey/Internal/WinApi.cs
     /// </summary>
-    public class WinApi
+    public sealed class WinApi
     {
         /// <summary>
         /// Registers a system-wide hot key.

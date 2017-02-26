@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace RexMingla.GlobalHotKey
 {
     // adapted from https://gitlab.com/jbjurstam/GlobalHotkeysWPF/blob/master/GlobalHotkeys/GlobalHotkeys/GlobalHotkeys.cs
-    public class HotKey
+    public sealed class HotKey
     {
         private static readonly ISet<int> _usedIds = new HashSet<int>();
 

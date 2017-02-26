@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace RexMingla.ClipboardManager
 {
-    public class ClipboardNotifier : IClipboardNotifier, IDisposable
+    public sealed class ClipboardNotifier : IClipboardNotifier, IDisposable
     {
         public event OnClipboardChangeEventHandler OnClipboardChange;
 
@@ -21,12 +21,11 @@ namespace RexMingla.ClipboardManager
             if (_instance == null)
             {
                 _instance = new ClipboardNotifier();
-                _instance.Start();
             }
             return _instance;
         }
 
-        private void Start()
+        public void Start()
         {
             ClipboardWatcher.Start();
             ClipboardWatcher.OnClipboardChange += (ClipboardContent content) =>
@@ -35,10 +34,15 @@ namespace RexMingla.ClipboardManager
             };
         }
 
-        public void Dispose()
+        public void Stop()
         {
             OnClipboardChange = null;
             ClipboardWatcher.Stop();
+        }
+
+        public void Dispose()
+        {
+            Stop();
         }
 
         class ClipboardWatcher : Form

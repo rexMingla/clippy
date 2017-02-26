@@ -12,7 +12,7 @@ using System.Windows.Interop;
 namespace RexMingla.GlobalHotKey
 {
     // based on https://github.com/kirmir/GlobalHotKey/blob/master/GlobalHotKey/HotKeyManager.cs
-    public class HotKeyManager : IHotKeyManager, IDisposable
+    public sealed class HotKeyManager : IHotKeyManager, IDisposable
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

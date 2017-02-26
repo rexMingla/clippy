@@ -1,6 +1,6 @@
 ﻿namespace RexMingla.WindowManager
 {
-    public class KeySender : IKeySender
+    public sealed class KeySender : IKeySender
     {
         public void SendPasteCommand(WindowProperties properties)
         {

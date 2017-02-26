@@ -1,10 +1,12 @@
-﻿namespace RexMingla.Clippy.WpfApplication
-{
-    public class Shell : IShell
-    {
-        private readonly MainWindow _window;
+﻿using System.Windows;
 
-        public Shell(MainWindow window)
+namespace RexMingla.Clippy.WpfApplication
+{
+    public sealed class Shell : IShell
+    {
+        private readonly Window _window;
+
+        public Shell(Window window)
         {
             _window = window;
         }

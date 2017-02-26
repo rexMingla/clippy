@@ -10,6 +10,9 @@ namespace RexMingla.ClipboardManager
 
     public interface IClipboardNotifier
     {
+        void Start();
+        void Stop();
+
         event OnClipboardChangeEventHandler OnClipboardChange;
     }
 }

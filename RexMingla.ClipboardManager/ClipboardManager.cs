@@ -4,7 +4,6 @@ namespace RexMingla.ClipboardManager
 {
     public sealed class ClipboardManager : IClipboardManager
     {
-        // TODO: this doesn't work..
         public ClipboardContent GetClipboardContent()
         {
             return Clipboard.GetDataObject().ToClipboardContent();

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace RexMingla.ClipboardManager
 {
-    public class WinApi
+    public sealed class WinApi
     {
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);

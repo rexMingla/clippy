@@ -3,5 +3,6 @@
     public interface IClipboardOrchestrator
     {
         void Start();
+        void Stop();
     }
 }

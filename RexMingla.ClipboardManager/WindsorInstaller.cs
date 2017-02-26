@@ -14,7 +14,7 @@ namespace RexMingla.ClipboardManager
                 Component.For<IClipboardStore>().ImplementedBy<ClipboardStore>().OnCreate(s =>
             {
                 ClipboardNotifier.GetNotifier().OnClipboardChange += s.InsertItem;
-            }).LifestyleTransient());
+            }));
         }
     }
 }

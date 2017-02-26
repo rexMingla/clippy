@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfTutorialSamples.Common_interface_controls.ContextMenuManuallyInvokedSample"
+﻿<Window x:Class="RexMingla.Clippy.WpfApplication.ClippyMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ContextMenuManuallyInvokedSample" Height="250" Width="250">

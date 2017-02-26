@@ -1,6 +1,5 @@
 ﻿using Castle.Windsor;
 using System.Windows;
-using System.Windows.Input;
 
 namespace RexMingla.Clippy.WpfApplication
 {
@@ -19,6 +18,7 @@ namespace RexMingla.Clippy.WpfApplication
             _container.Install(new GlobalHotKey.WindsorInstaller());
             _container.Install(new ClipboardManager.WindsorInstaller());
             _container.Install(new WindowManager.WindsorInstaller());
+            _container.Install(new Config.WindsorInstaller(WpfApplication.Properties.Settings.Default.SettingsFile));
 
             var shell = _container.Resolve<IShell>();
             shell.Run();
@@ -29,5 +29,13 @@ namespace RexMingla.Clippy.WpfApplication
             _container.Release(shell);
             _container.Release(orchestrator);
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            var orchestrator = _container.Resolve<IClipboardOrchestrator>();
+            orchestrator.Stop();
+        }
+
     }
 }

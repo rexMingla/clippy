@@ -13,7 +13,7 @@ namespace RexMingla.GlobalHotKey
                 Component.For<IHotKeyManager>()
                     .ImplementedBy<HotKeyManager>()
                     .DependsOn(
-                        Dependency.OnComponent(typeof(Window), "window")).LifestyleSingleton()
+                        Dependency.OnComponent(typeof(Window), "splash")).LifestyleSingleton()
             );
         }
     }

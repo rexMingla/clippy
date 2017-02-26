@@ -17,7 +17,7 @@ namespace RexMingla.WindowManager
         }
     }
 
-    public class WinApi
+    public sealed class WinApi
     {
         public const uint WM_KEYDOWN = 0x100;
 

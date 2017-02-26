@@ -12,12 +12,17 @@ namespace RexMingla.ClipboardManager
         public override bool Equals(object obj)
         {
             var other = obj as ClipboardContent;
-            return other != null && Data.Count == other.Data.Count && Data.All(d => other.Data.FirstOrDefault(d2 => d.Equals(d2)) != null);
+            return other != null && Data.Count == other.Data.Count && Data.Any(d => other.Data.FirstOrDefault(d2 => d.Equals(d2)) != null);
         }
 
         public override int GetHashCode()
         {
             return Data.Sum(d => d.GetHashCode());
+        }
+
+        public bool HasData()
+        {
+            return Data.Any();
         }
     }
 

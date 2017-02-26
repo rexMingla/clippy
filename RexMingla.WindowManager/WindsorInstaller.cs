@@ -4,7 +4,7 @@ using Castle.Windsor;
 
 namespace RexMingla.WindowManager
 {
-    public class WindsorInstaller : IWindsorInstaller
+    public sealed class WindsorInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace RexMingla.ClipboardManager.Console
 {
-    public class Program
+    public sealed class Program
     {
         public static void Main(string[] args)
         {
@@ -14,7 +14,6 @@ namespace RexMingla.ClipboardManager.Console
             notifier.OnClipboardChange += OnChange;
             var manager = container.Resolve<IClipboardManager>();
 
-            //manager.SetClipboardContent(manager.GetClipboardContent());
             while (true)
             {
             }
