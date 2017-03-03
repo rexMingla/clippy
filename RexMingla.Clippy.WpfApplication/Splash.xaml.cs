@@ -27,7 +27,7 @@ namespace RexMingla.Clippy.WpfApplication
             _translator = translator;
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void OnClosed(object sender, EventArgs e)
         {
             base.OnClosed(e);
             Application.Current.Shutdown();
@@ -57,6 +57,14 @@ namespace RexMingla.Clippy.WpfApplication
             return ret;
         }
 
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            //clean up notifyicon (would otherwise stay open until application finishes)
+            TrayIcon.Dispose();
+
+            base.OnClosing(e);
+        }
+
         private MenuItem CreateMenuItem(ClipboardContent content)
         {
             var item = _translator.ToMenuItem(content);
@@ -68,6 +76,19 @@ namespace RexMingla.Clippy.WpfApplication
         {
             var item = e.Source as MenuItem;
             _manager.SetClipboardContent(item.DataContext as ClipboardContent);
+        }
+
+        private void TrayContextMenuOpen(object sender, RoutedEventArgs e)
+        {
+            //OpenEventCounter.Text = (int.Parse(OpenEventCounter.Text) + 1).ToString();
+        }
+
+        private void PreviewTrayContextMenuOpen(object sender, RoutedEventArgs e)
+        {
+            ////marking the event as handled suppresses the context menu
+            //e.Handled = (bool)SuppressContextMenu.IsChecked;
+
+            //PreviewOpenEventCounter.Text = (int.Parse(PreviewOpenEventCounter.Text) + 1).ToString();
         }
     }
 }

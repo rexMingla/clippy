@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace RexMingla.Clippy.WpfApplication
 {
-    public class MenuItemTranslator
+    public class MenuItemTranslator : IMenuItemTranslator
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,7 +23,7 @@ namespace RexMingla.Clippy.WpfApplication
         public MenuItem ToMenuItem(ClipboardContent content)
         {
             var translator = _translators.FirstOrDefault(t => content.Data.Any(d => d.DataFormat == t.PreferredFormat));
-            if (translator != null)
+            if (translator == null)
             {
                 var type = content.Data.First().DataFormat;
                 _log.Warn($"Clipboard data type {content.Data.First().DataFormat} unknown for {content}.");

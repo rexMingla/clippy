@@ -22,7 +22,7 @@ namespace RexMingla.Clippy.Config
                 Component.For<IConfigManager>().ImplementedBy<ConfigManager>().DependsOn(
                     Dependency.OnConfigValue("configFile", _configFile),
                     Dependency.OnComponentCollection("converters", "clipboardConverter")
-                ).LifestyleTransient());
+                ).LifestyleSingleton());
         }
     }
 }

@@ -45,6 +45,9 @@ namespace RexMingla.Clippy.Config
             _log.Debug($"Loading from config file {_configFile}");
             try
             {
+                _config.Settings = null;
+                _config.ClipboardHistory = null;
+
                 var json = File.ReadAllText(_configFile);
                 var config = JsonConvert.DeserializeObject<Config>(json, _converters);
                 SetConfig(config);
@@ -52,6 +55,7 @@ namespace RexMingla.Clippy.Config
             catch (Exception ex)
             {
                 _log.Warn($"An error occurred loading config", ex);
+                SetConfig(Config.DefaultConfig);
             }
         }
 
@@ -66,11 +70,26 @@ namespace RexMingla.Clippy.Config
 
         public void SetConfigSettings(Settings settings)
         {
-            if (_config.Settings != settings)
+            var sanitizedSettings = SanitizeSettings(settings);
+            if (_config.Settings != sanitizedSettings)
             {
-                _config.Settings = settings;
-                OnClipboardSettingsChanged?.Invoke(settings);
+                _config.Settings = sanitizedSettings;
+                OnClipboardSettingsChanged?.Invoke(sanitizedSettings);
             }
+        }
+
+        private Settings SanitizeSettings(Settings settings)
+        {
+            if (settings == null)
+            {
+                return Config.DefaultConfig.Settings;
+            }
+            return new Settings
+            {
+                ItemsPerGroup = Math.Max(5, Math.Min(100, settings.ItemsPerGroup)),
+                ItemsPerMainGroup = Math.Max(0, Math.Min(100, settings.ItemsPerMainGroup)),
+                MaxDisplayedItems = Math.Max(10, Math.Min(100, settings.MaxDisplayedItems))
+            };
         }
 
         private void SetConfig(Config config) {

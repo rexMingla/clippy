@@ -19,7 +19,8 @@ namespace RexMingla.Clippy.Config
             Settings = new Settings
             {
                 MaxDisplayedItems = 100,
-                ItemsPerGroup = 10
+                ItemsPerMainGroup = 3,
+                ItemsPerGroup = 4,
             },
             ClipboardHistory = new List<ClipboardContent>()
         };
@@ -28,6 +29,7 @@ namespace RexMingla.Clippy.Config
     public class Settings
     {
         public int MaxDisplayedItems;
+        public int ItemsPerMainGroup;
         public int ItemsPerGroup;
     }
 }

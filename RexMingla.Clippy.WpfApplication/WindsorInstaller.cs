@@ -16,14 +16,15 @@ namespace RexMingla.Clippy.WpfApplication
                 Component.For<ITranslator>().ImplementedBy<TextTranslator>().Named("textTranslator"),
                 Component.For<ITranslator>().ImplementedBy<FileTranslator>().Named("fileTranslator"),
                 Component.For<ITranslator>().ImplementedBy<ImageTranslator>().Named("imageTranslator"),
-                Component.For<MenuItemTranslator>().Named("menuItemTranslator")
+                Component.For<IMenuItemTranslator>().ImplementedBy<MenuItemTranslator>().Named("menuItemTranslator")
                     .DependsOn(
                         Dependency.OnComponentCollection("translators", "textTranslator", "fileTranslator", "imageTranslator")
                     ),
-                Component.For<Splash>().Named("splash")
+                Component.For<Splash>().Named("splash2")
                     .DependsOn(
                         Dependency.OnComponent("translator", "menuItemTranslator")
                     ).LifestyleSingleton(),
+                Component.For<ClippyMenu>().Named("splash").LifestyleSingleton(),
                 //Component.For<MainWindow>().Named("window").LifestyleSingleton(),
                 Component.For<TaskbarIcon>().LifestyleSingleton(),
                 Component.For<IClipboardOrchestrator>().ImplementedBy<ClipboardOrchestrator>(),

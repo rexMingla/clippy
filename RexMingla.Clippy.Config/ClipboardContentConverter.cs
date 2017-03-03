@@ -40,9 +40,9 @@ namespace RexMingla.Clippy.Config
             {
                 return;
             }
-            strippedContent.Data?.RemoveAll(d => d.Content as MemoryStream != null); // remove for purposes of serialization
+            strippedContent.Data.RemoveAll(d => d.Content as MemoryStream != null); // remove for purposes of serialization
 
-            var bitmap = strippedContent.Data?.FirstOrDefault(d => d.DataFormat == "Bitmap");
+            var bitmap = strippedContent.Data.FirstOrDefault(d => d.DataFormat == "Bitmap");
             if (bitmap != null)
             {
                 bitmap.Content = SerializeImage(bitmap.Content);

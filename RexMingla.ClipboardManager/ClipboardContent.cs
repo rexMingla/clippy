@@ -12,7 +12,7 @@ namespace RexMingla.ClipboardManager
         public override bool Equals(object obj)
         {
             var other = obj as ClipboardContent;
-            return other != null && Data.Any(d => other.Data.FirstOrDefault(d2 => d.Equals(d2)) != null);
+            return other != null && Data.Any(d => other.Data.Any(d2 => d.Equals(d2)));
         }
 
         public override int GetHashCode()

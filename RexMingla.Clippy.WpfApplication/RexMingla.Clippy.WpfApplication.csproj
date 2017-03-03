@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SysTrayMenu.cs" />
     <Compile Include="ClipboardOrchestrator.cs" />
     <Compile Include="ClippyMenu.xaml.cs">
       <DependentUpon>ClippyMenu.xaml</DependentUpon>
@@ -92,6 +93,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IClipboardOrchestrator.cs" />
     <Compile Include="IShell.cs" />
+    <Compile Include="translators\IMenuItemTranslator.cs" />
     <Compile Include="translators\ITranslator.cs" />
     <Compile Include="translators\MenuItemTranslator.cs" />
     <Compile Include="NotifyIconViewModel.cs" />
@@ -172,9 +174,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\clipboard.png">
+    <Content Include="images\clipboard_32x32.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
+    <Content Include="images\clipboard_32x32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

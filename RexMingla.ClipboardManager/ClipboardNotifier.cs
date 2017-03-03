@@ -119,7 +119,7 @@ namespace RexMingla.ClipboardManager
                 {
                     return;
                 }
-                OnClipboardChange(data.ToClipboardContent());
+                OnClipboardChange?.Invoke(data.ToClipboardContent());
             }
         }
     }
