@@ -67,7 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClipboardContent.cs" />
     <Compile Include="ClipboardContentTranslator.cs" />
     <Compile Include="ClipboardManager.cs" />
     <Compile Include="IClipboardNotifier.cs" />
@@ -81,6 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RexMingla.DataModel\RexMingla.DataModel.csproj">
+      <Project>{B46FF569-CC86-4A72-A132-89BC5034FEE6}</Project>
+      <Name>RexMingla.DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

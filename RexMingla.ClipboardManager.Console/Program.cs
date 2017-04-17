@@ -1,4 +1,5 @@
 ﻿using Castle.Windsor;
+using RexMingla.DataModel;
 using System.Linq;
 
 namespace RexMingla.ClipboardManager.Console

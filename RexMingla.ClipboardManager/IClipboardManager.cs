@@ -1,4 +1,6 @@
-﻿namespace RexMingla.ClipboardManager
+﻿using RexMingla.DataModel;
+
+namespace RexMingla.ClipboardManager
 {
     public interface IClipboardManager
     {

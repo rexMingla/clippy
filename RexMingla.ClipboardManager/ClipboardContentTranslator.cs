@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using RexMingla.DataModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace RexMingla.ClipboardManager

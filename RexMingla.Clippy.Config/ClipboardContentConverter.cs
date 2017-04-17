@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RexMingla.ClipboardManager;
+using RexMingla.DataModel;
 using System;
 using System.Drawing;
 using System.IO;

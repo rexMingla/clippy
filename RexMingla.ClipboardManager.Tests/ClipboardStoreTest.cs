@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+using RexMingla.DataModel;
 
 namespace RexMingla.ClipboardManager.Tests
 {
@@ -29,6 +30,17 @@ namespace RexMingla.ClipboardManager.Tests
             Assert.AreEqual(1, GetStoreSize(store));
 
             store.InsertItem(c2);
+            Assert.AreEqual(1, GetStoreSize(store));
+        }
+
+        [Test]
+        public void When_Same_List_Data_Item_Added_To_Store_Then_Count_Remains_Same()
+        {
+            var store = new ClipboardStore();
+            store.InsertItem(CreateClipboardContent(new ClipboardData { Content = new[] { "testy" }, DataFormat = "Text" }));
+            Assert.AreEqual(1, GetStoreSize(store));
+
+            store.InsertItem(CreateClipboardContent(new ClipboardData { Content = new[] { "testy" }, DataFormat = "Text" }));
             Assert.AreEqual(1, GetStoreSize(store));
         }
 

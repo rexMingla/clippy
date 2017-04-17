@@ -1,4 +1,4 @@
-﻿using RexMingla.ClipboardManager;
+﻿using RexMingla.DataModel;
 using System.Windows.Controls;
 using System;
 using System.Windows.Media.Imaging;

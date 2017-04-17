@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RexMingla.DataModel;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 

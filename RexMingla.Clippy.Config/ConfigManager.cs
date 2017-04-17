@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using Newtonsoft.Json;
 using RexMingla.ClipboardManager;
+using RexMingla.DataModel;
 using System;
 using System.Collections.Generic;
 using System.IO;

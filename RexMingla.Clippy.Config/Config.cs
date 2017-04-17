@@ -1,7 +1,5 @@
-﻿using RexMingla.ClipboardManager;
-using System;
+﻿using RexMingla.DataModel;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace RexMingla.Clippy.Config
 {

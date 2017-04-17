@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using RexMingla.ClipboardManager;
+using RexMingla.DataModel;
 
 namespace RexMingla.Clippy.WpfApplication
 {

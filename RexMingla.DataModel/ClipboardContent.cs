@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
 
-namespace RexMingla.ClipboardManager
+namespace RexMingla.DataModel
 {
     public sealed class ClipboardContent
     {

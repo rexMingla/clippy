@@ -2,7 +2,6 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using RexMingla.Clippy.WpfApplication.translators;
-using System.Windows;
 
 namespace RexMingla.Clippy.WpfApplication
 {

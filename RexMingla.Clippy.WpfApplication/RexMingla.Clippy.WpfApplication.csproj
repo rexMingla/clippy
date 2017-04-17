@@ -151,6 +151,10 @@
       <Project>{E6277E3D-500F-41A4-A978-F1C20B2079C0}</Project>
       <Name>RexMingla.Clippy.Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RexMingla.DataModel\RexMingla.DataModel.csproj">
+      <Project>{b46ff569-cc86-4a72-a132-89bc5034fee6}</Project>
+      <Name>RexMingla.DataModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RexMingla.GlobalHotKey\RexMingla.GlobalHotKey.csproj">
       <Project>{d03283d5-0919-4191-82c8-f7a007d21268}</Project>
       <Name>RexMingla.GlobalHotKey</Name>

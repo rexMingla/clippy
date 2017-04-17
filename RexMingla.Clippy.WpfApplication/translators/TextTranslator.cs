@@ -1,7 +1,5 @@
-﻿using RexMingla.ClipboardManager;
-using System.Linq;
-using System.Windows.Controls;
-using System;
+﻿using System.Windows.Controls;
+using RexMingla.DataModel;
 
 namespace RexMingla.Clippy.WpfApplication.translators
 {

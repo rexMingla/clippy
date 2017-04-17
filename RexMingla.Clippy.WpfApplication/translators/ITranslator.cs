@@ -1,4 +1,4 @@
-﻿using RexMingla.ClipboardManager;
+﻿using RexMingla.DataModel;
 using System.Windows.Controls;
 
 namespace RexMingla.Clippy.WpfApplication.translators

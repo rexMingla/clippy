@@ -1,5 +1,6 @@
 ﻿using RexMingla.ClipboardManager;
 using RexMingla.Clippy.Config;
+using RexMingla.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -130,6 +131,7 @@ namespace RexMingla.Clippy.WpfApplication
 
         private void AddHistoryItems(ContextMenu ret, List<ClipboardContent> items)
         {
+            var index = ret.Items.Count;
             if (!items.Any())
             {
                 ret.Items.Add(new MenuItem { Header = "No items in clipboard", IsEnabled = false });
@@ -141,15 +143,15 @@ namespace RexMingla.Clippy.WpfApplication
                 if (i < _settings.ItemsPerMainGroup)
                 {
                     item.InputGestureText = $"Alt+{i}";
-                    ret.Items.Insert(0, item);
+                    ret.Items.Insert(index, item);
                     continue;
                 }
                 if ((i - _settings.ItemsPerMainGroup) % _settings.ItemsPerGroup == 0)
                 {
                     subMenu = new MenuItem { Header = $"{i} - {i + _settings.ItemsPerGroup - 1}" };
-                    ret.Items.Insert(0, subMenu);
+                    ret.Items.Insert(index, subMenu);
                 }
-                subMenu.Items.Insert(0, item);
+                subMenu.Items.Insert(index, item);
             }
         }
 

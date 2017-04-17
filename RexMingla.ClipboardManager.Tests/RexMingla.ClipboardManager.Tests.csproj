@@ -68,6 +68,10 @@
       <Project>{87b8ff1b-acc4-467e-a0be-ca5b073b7616}</Project>
       <Name>RexMingla.ClipboardManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RexMingla.DataModel\RexMingla.DataModel.csproj">
+      <Project>{B46FF569-CC86-4A72-A132-89BC5034FEE6}</Project>
+      <Name>RexMingla.DataModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

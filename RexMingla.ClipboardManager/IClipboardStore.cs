@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RexMingla.DataModel;
+using System.Collections.Generic;
 
 namespace RexMingla.ClipboardManager
 {

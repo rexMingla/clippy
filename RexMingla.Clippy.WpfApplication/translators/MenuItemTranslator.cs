@@ -1,6 +1,6 @@
 ﻿using Common.Logging;
-using RexMingla.ClipboardManager;
 using RexMingla.Clippy.WpfApplication.translators;
+using RexMingla.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

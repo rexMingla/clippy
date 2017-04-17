@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using RexMingla.ClipboardManager;
 using RexMingla.Clippy.Config;
+using RexMingla.DataModel;
 using RexMingla.GlobalHotKey;
 using RexMingla.WindowManager;
 using System;

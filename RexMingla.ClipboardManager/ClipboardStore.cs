@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using RexMingla.DataModel;
 using System.Collections.Generic;
 using System.Reflection;
 
