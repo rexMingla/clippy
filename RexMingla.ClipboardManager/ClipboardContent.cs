@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace RexMingla.ClipboardManager
 {
@@ -12,7 +13,7 @@ namespace RexMingla.ClipboardManager
         public override bool Equals(object obj)
         {
             var other = obj as ClipboardContent;
-            return other != null && Data.Any(d => other.Data.Any(d2 => d.Equals(d2)));
+            return other != null && Data.Any(d => other.Data.Where(d2 => d2.DataFormat == d.DataFormat).Any(d2 => d.Equals(d2)));
         }
 
         public override int GetHashCode()
@@ -34,7 +35,17 @@ namespace RexMingla.ClipboardManager
         public override bool Equals(object obj)
         {
             var other = obj as ClipboardData;
-            return other != null && string.Equals(DataFormat, other.DataFormat) && object.Equals(Content, other.Content);
+            if (other == null && !string.Equals(DataFormat, other.DataFormat))
+            {
+                return false;
+            }
+            var otherValEnumerable = other.Content as object[];
+            var thisValEnumerable = Content as object[];
+            if (otherValEnumerable != null && thisValEnumerable != null)
+            {
+                return Enumerable.SequenceEqual(otherValEnumerable, thisValEnumerable);
+            }
+            return object.Equals(Content, other.Content);
         }
 
         public override int GetHashCode()

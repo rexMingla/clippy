@@ -22,7 +22,7 @@ namespace RexMingla.Clippy.WpfApplication.translators
                 var name = names.First();
                 return new MenuItem
                 {
-                    Header = name.Length > 100 ? $"[1 File] ...{name.Substring(name.Length - 97, name.Length)}" : $"[1 File] {name}",
+                    Header = name.Length > 100 ? $"[1 File] ...{name.Substring(name.Length - 97, 97)}" : $"[1 File] {name}",
                     DataContext = content
                 };
             }

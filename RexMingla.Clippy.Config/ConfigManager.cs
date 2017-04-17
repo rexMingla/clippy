@@ -14,23 +14,25 @@ namespace RexMingla.Clippy.Config
 
         private readonly string _configFile;
         private readonly JsonConverter[] _converters;
+        private readonly IClipboardStore _clipboardStore;
         private readonly Config _config;
 
-        public event OnClipboardHistoryChangedHandler OnClipboardHistoryChanged;
-        public event OnConfigSettingsChangedHandler OnClipboardSettingsChanged;
+        private readonly List<ISettingsListener> _settingsListeners = new List<ISettingsListener>();
 
-        public ConfigManager(string configFile, params JsonConverter[] converters)
+        public ConfigManager(string configFile, IClipboardStore clipboardStore, params JsonConverter[] converters)
         {
             _configFile = configFile;
             _converters = converters;
+            _clipboardStore = clipboardStore;
             _config = Config.DefaultConfig;
         }
 
         public void SaveConfig()
         {
-            _log.Debug($"Saving to config file {_configFile}");
             try
             {
+                _config.ClipboardHistory = _clipboardStore.GetItems();
+                _log.Debug($"Saving to config file. {_config.ClipboardHistory.Count}(s) history items");
                 var json = JsonConvert.SerializeObject(_config, Formatting.Indented, _converters);
                 File.WriteAllText(_configFile, json);
             }
@@ -45,9 +47,6 @@ namespace RexMingla.Clippy.Config
             _log.Debug($"Loading from config file {_configFile}");
             try
             {
-                _config.Settings = null;
-                _config.ClipboardHistory = null;
-
                 var json = File.ReadAllText(_configFile);
                 var config = JsonConvert.DeserializeObject<Config>(json, _converters);
                 SetConfig(config);
@@ -64,7 +63,7 @@ namespace RexMingla.Clippy.Config
             if (_config.ClipboardHistory != content)
             {
                 _config.ClipboardHistory = content;
-                OnClipboardHistoryChanged?.Invoke(content);
+                _clipboardStore.SetItems(content);
             }
         }
 
@@ -74,7 +73,7 @@ namespace RexMingla.Clippy.Config
             if (_config.Settings != sanitizedSettings)
             {
                 _config.Settings = sanitizedSettings;
-                OnClipboardSettingsChanged?.Invoke(sanitizedSettings);
+                _settingsListeners.ForEach(l => l.OnSettingsChanged(settings));
             }
         }
 
@@ -99,6 +98,12 @@ namespace RexMingla.Clippy.Config
             }
             SetConfigSettings(config.Settings);
             SetClipboardHistory(config.ClipboardHistory);
+        }
+
+        public void RegisterSettingsListener(ISettingsListener listener)
+        {
+            _settingsListeners.Add(listener);
+            listener.OnSettingsChanged(_config.Settings);
         }
     }
 }

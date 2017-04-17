@@ -1,6 +1,7 @@
 ﻿using RexMingla.ClipboardManager;
 using RexMingla.Clippy.Config;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -12,7 +13,7 @@ namespace RexMingla.Clippy.WpfApplication
     /// Interaction logic for ClippyMenu.xaml
     /// </summary>
     /// Reference: http://mubox.codeplex.com/SourceControl/changeset/view/64743#1119066
-    public partial class ClippyMenu : Window
+    public partial class ClippyMenu : Window, ISettingsListener
     {
         private System.Windows.Forms.NotifyIcon _notifyIcon = null;
 
@@ -35,7 +36,7 @@ namespace RexMingla.Clippy.WpfApplication
             _translator = translator;
             _clipboardManager = clipboardManager;
 
-            _configManager.OnClipboardSettingsChanged += OnSettingsChanged;
+            _configManager.RegisterSettingsListener(this);
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -52,7 +53,7 @@ namespace RexMingla.Clippy.WpfApplication
             base.OnInitialized(e);
         }
 
-        private void OnSettingsChanged(Settings settings)
+        public void OnSettingsChanged(Settings settings)
         {
             _settings = settings;
         }
@@ -108,43 +109,81 @@ namespace RexMingla.Clippy.WpfApplication
 
         private ContextMenu BuildMenu()
         {
-            var ret = new ContextMenu();
-
-            var items = _clipboardStore.GetItems().ToList();
-            if (!items.Any())
+            var ret = new ContextMenu
             {
-                ret.Items.Add(new MenuItem { Header = "No items in clipboard", IsEnabled = false });
-            }
+                StaysOpen = false
+            };
 
-            MenuItem currentMenu = null;
-            for (int i = 0; i < Math.Min(items.Count, _settings.MaxDisplayedItems); i++)
-            {
-                var item = items[i];
-                if (i < _settings.ItemsPerMainGroup)
-                {
-                    ret.Items.Insert(0, CreateMenuItem(item));
-                    continue;
-                }
-                if ((i - _settings.ItemsPerMainGroup) % _settings.ItemsPerGroup == 0)
-                {
-                    currentMenu = new MenuItem { Header = $"{i} - {i + _settings.ItemsPerGroup - 1}" };
-                    ret.Items.Insert(0, currentMenu);
-                }
-                currentMenu.Items.Insert(0, _translator.ToMenuItem(item));
-            }
+            ret.Items.Add(CreateMenuItem("Exit Clippy", QuitApp));
+            ret.Items.Add(CreateMenuItem("Preferences...", ShowPreferences));
+            ret.Items.Add(CreateMenuItem("Clear History", ClearHistory));
+            ret.Items.Add(new Separator());
+            ret.Items.Add(new MenuItem { Header = "Snippets", IsEnabled = false });
+            ret.Items.Add(new Separator());
+            AddHistoryItems(ret, _clipboardStore.GetItems().ToList());
             ret.Items.Add(new Separator());
             ret.Items.Add(new MenuItem { Header = "History", IsEnabled = false });
             return ret;
         }
 
-        private MenuItem CreateMenuItem(ClipboardContent content)
+
+
+        private void AddHistoryItems(ContextMenu ret, List<ClipboardContent> items)
         {
-            var item = _translator.ToMenuItem(content);
-            item.Click += OnSetClipboardContent;
+            if (!items.Any())
+            {
+                ret.Items.Add(new MenuItem { Header = "No items in clipboard", IsEnabled = false });
+            }
+            MenuItem subMenu = null;
+            for (int i = 0; i < Math.Min(items.Count, _settings.MaxDisplayedItems); i++)
+            {
+                var item = CreateHistoryMenuItem(items[i]);
+                if (i < _settings.ItemsPerMainGroup)
+                {
+                    item.InputGestureText = $"Alt+{i}";
+                    ret.Items.Insert(0, item);
+                    continue;
+                }
+                if ((i - _settings.ItemsPerMainGroup) % _settings.ItemsPerGroup == 0)
+                {
+                    subMenu = new MenuItem { Header = $"{i} - {i + _settings.ItemsPerGroup - 1}" };
+                    ret.Items.Insert(0, subMenu);
+                }
+                subMenu.Items.Insert(0, item);
+            }
+        }
+
+        private MenuItem CreateMenuItem(string header, RoutedEventHandler handler)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += handler;
             return item;
         }
 
-        private void OnSetClipboardContent(object sender, RoutedEventArgs e)
+        private MenuItem CreateHistoryMenuItem(ClipboardContent content)
+        {
+            var item = _translator.ToMenuItem(content);
+            item.Click += SetClipboardContent;
+            return item;
+        }
+
+        private void ShowPreferences(object sender, RoutedEventArgs e)
+        {
+            var preferencesWindow = new PreferencesWindow(_configManager);
+            preferencesWindow.ShowDialog();
+        }
+
+        private void ClearHistory(object sender, RoutedEventArgs e)
+        {
+            _clipboardStore.ClearItems();
+        }
+
+        private void QuitApp(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.Close();
+        }
+
+        private void SetClipboardContent(object sender, RoutedEventArgs e)
         {
             var item = e.Source as MenuItem;
             _clipboardManager.SetClipboardContent(item.DataContext as ClipboardContent);

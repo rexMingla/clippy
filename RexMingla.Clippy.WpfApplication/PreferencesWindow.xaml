@@ -1,0 +1,34 @@
+﻿<Window x:Class="RexMingla.Clippy.WpfApplication.PreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RexMingla.Clippy.WpfApplication"
+        mc:Ignorable="d"
+        Title="PreferencesWindow" Height="150" Width="300" Loaded="OnLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="131"/>
+            <ColumnDefinition Width="Auto" MinWidth="129"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Padding="3" Grid.Row="0" Grid.Column="0  " Margin="0,-2,-49,0" Grid.ColumnSpan="2">Number of items inline</Label>
+        <TextBox Padding="3" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ItemsPerMainGroup, Mode=TwoWay}" Margin="0,0,-30,0"></TextBox>
+
+        <Label Padding="3" Grid.Row="1" Grid.Column="0">Items per group</Label>
+        <TextBox Padding="3" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ItemsPerGroup, Mode=TwoWay}" Margin="0,0,-30,0"></TextBox>
+
+        <Label Grid.Row="2" Grid.Column="0">Max items</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=MaxDisplayedItems, Mode=TwoWay}" Margin="0,0,-30,0"></TextBox>
+
+        <Button Grid.Row="3" Grid.Column="0" Content="OK" Click="OnOk" />
+        <Button Grid.Row="3" Grid.Column="1" Content="Cancel" Click="OnCancel" />
+    </Grid>
+</Window>

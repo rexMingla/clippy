@@ -11,7 +11,7 @@ namespace RexMingla.ClipboardManager
             container.Register(
                 Component.For<IClipboardManager>().ImplementedBy<ClipboardManager>().LifestyleTransient(),
                 Component.For<IClipboardNotifier>().Instance(ClipboardNotifier.GetNotifier()).LifestyleSingleton(),
-                Component.For<IClipboardStore>().ImplementedBy<ClipboardStore>().OnCreate(s =>
+                Component.For<IClipboardStore>().ImplementedBy<ClipboardStore>().LifestyleSingleton().OnCreate(s =>
             {
                 container.Resolve<IClipboardNotifier>().OnClipboardChange += s.InsertItem;
             }));

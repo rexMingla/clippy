@@ -27,7 +27,7 @@ namespace RexMingla.ClipboardManager
 
         public void InsertItem(ClipboardContent content)
         {
-            _log.Info($"Adding item {content}. item count {_data.Count}");
+            _log.Trace($"Adding item {content}. item count {_data.Count}");
             if (!content.HasData())
             {
                 _log.Warn($"No data found. Item {content} ignored.");
@@ -40,6 +40,11 @@ namespace RexMingla.ClipboardManager
                 _data.RemoveAt(_data.Count - 1);
             }
             _data.Insert(0, content);
+        }
+
+        public void ClearItems()
+        {
+            _data.Clear();
         }
 
         public List<ClipboardContent> GetItems()

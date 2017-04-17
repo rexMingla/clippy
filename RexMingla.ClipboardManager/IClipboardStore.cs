@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RexMingla.ClipboardManager
 {
@@ -7,6 +6,7 @@ namespace RexMingla.ClipboardManager
     {
         void SetItems(List<ClipboardContent> contents);
         void InsertItem(ClipboardContent content);
+        void ClearItems();
         List<ClipboardContent> GetItems();
     }
 }

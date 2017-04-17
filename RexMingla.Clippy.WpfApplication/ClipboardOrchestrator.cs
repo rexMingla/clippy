@@ -6,7 +6,6 @@ using RexMingla.WindowManager;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace RexMingla.Clippy.WpfApplication
@@ -48,7 +47,6 @@ namespace RexMingla.Clippy.WpfApplication
 
             _showMenuHotKey = new HotKey(ModifierKeys.Control | ModifierKeys.Shift, Key.V, OnShowContextMenu);
 
-            _configManager.OnClipboardHistoryChanged += _clipboardStore.SetItems;
             _configManager.LoadConfig();
         }
 
@@ -106,9 +104,13 @@ namespace RexMingla.Clippy.WpfApplication
 
         public void Dispose()
         {
-            _configManager.OnClipboardHistoryChanged -= _clipboardStore.SetItems;
             _configManager.SetClipboardHistory(_clipboardStore.GetItems());
             _configManager.SaveConfig();
+        }
+
+        public void OnClipboardHistoryChanged(List<ClipboardContent> history)
+        {
+            _clipboardStore.SetItems(history);
         }
     }
 }

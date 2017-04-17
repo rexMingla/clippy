@@ -1,5 +1,7 @@
 ﻿using RexMingla.ClipboardManager;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace RexMingla.Clippy.Config
 {
@@ -8,11 +10,7 @@ namespace RexMingla.Clippy.Config
         public Settings Settings { get; set; }
         public List<ClipboardContent> ClipboardHistory { get; set; }
 
-        public Config()
-        {
-            Settings = new Settings();
-            ClipboardHistory = new List<ClipboardContent>();
-        }
+        private static Config _config = DefaultConfig;
 
         public static Config DefaultConfig = new Config
         {
