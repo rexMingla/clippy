@@ -13,11 +13,11 @@ namespace RexMingla.Clippy.WpfApplication
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public List<ITranslator> _translators;
+        public IList<ITranslator> _translators;
 
-        public MenuItemTranslator(params ITranslator[] translators)
+        public MenuItemTranslator(IList<ITranslator> translators)
         {
-            _translators = translators.ToList();
+            _translators = translators;
         }
 
         public MenuItem ToMenuItem(ClipboardContent content)

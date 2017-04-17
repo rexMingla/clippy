@@ -18,6 +18,7 @@ namespace RexMingla.Clippy.WpfApplication
             _container.Install(new GlobalHotKey.WindsorInstaller());
             _container.Install(new ClipboardManager.WindsorInstaller());
             _container.Install(new WindowManager.WindsorInstaller());
+            _container.Install(new Action.WindsorInstaller());
             _container.Install(new Config.WindsorInstaller(WpfApplication.Properties.Settings.Default.SettingsFile));
 
             var splash = _container.Resolve<ClippyMenu>();

@@ -24,6 +24,14 @@ namespace RexMingla.DataModel
         {
             return Data.Any();
         }
+
+        public ClipboardContent Clone()
+        {
+            return new ClipboardContent
+            {
+                Data = Data.Select(d => d.Clone()).ToList()
+            };
+        }
     }
 
     public sealed class ClipboardData
@@ -53,6 +61,11 @@ namespace RexMingla.DataModel
             hash += 31 + (DataFormat?.GetHashCode() ?? 0);
             hash += 31 + (Content?.GetHashCode() ?? 0);
             return hash;
+        }
+
+        public ClipboardData Clone()
+        {
+            return (ClipboardData)MemberwiseClone();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using RexMingla.ClipboardManager;
+﻿using RexMingla.Action;
+using RexMingla.Action.factory;
+using RexMingla.ClipboardManager;
 using RexMingla.Clippy.Config;
 using RexMingla.DataModel;
 using System;
@@ -20,6 +22,7 @@ namespace RexMingla.Clippy.WpfApplication
 
         private readonly IClipboardStore _clipboardStore;
         private readonly IMenuItemTranslator _translator;
+        private readonly IActionFactory _actionFactory;
         private readonly IClipboardManager _clipboardManager;
         private readonly IConfigManager _configManager;
 
@@ -28,6 +31,7 @@ namespace RexMingla.Clippy.WpfApplication
         public ClippyMenu(IClipboardStore clipboardStore,
             IConfigManager configManager,
             IMenuItemTranslator translator,
+            IActionFactory actionFactory,
             IClipboardManager clipboardManager)
         {
             InitializeComponent();
@@ -35,6 +39,7 @@ namespace RexMingla.Clippy.WpfApplication
             _clipboardStore = clipboardStore;
             _configManager =  configManager;
             _translator = translator;
+            _actionFactory = actionFactory;
             _clipboardManager = clipboardManager;
 
             _configManager.RegisterSettingsListener(this);
@@ -119,18 +124,36 @@ namespace RexMingla.Clippy.WpfApplication
             ret.Items.Add(CreateMenuItem("Preferences...", ShowPreferences));
             ret.Items.Add(CreateMenuItem("Clear History", ClearHistory));
             ret.Items.Add(new Separator());
-            ret.Items.Add(new MenuItem { Header = "Snippets", IsEnabled = false });
-            ret.Items.Add(new Separator());
-            AddHistoryItems(ret, _clipboardStore.GetItems().ToList());
-            ret.Items.Add(new Separator());
-            ret.Items.Add(new MenuItem { Header = "History", IsEnabled = false });
+            AddActions(ret);
+            AddHistoryItems(ret);
             return ret;
         }
 
-
-
-        private void AddHistoryItems(ContextMenu ret, List<ClipboardContent> items)
+        private void AddActions(ContextMenu ret)
         {
+            var actionSubMenu = new MenuItem { Header = $"Actions", ToolTip = "You can manipulate the most recent content" };
+            ret.Items.Add(new Separator());
+            ret.Items.Add(actionSubMenu);
+
+            var items = _clipboardStore.GetItems().ToList();
+            List<ActionDetail> actionDetails = null;
+            if (items.Any())
+            {
+                actionDetails = _actionFactory.CreateActionDetails(items.First());
+                foreach (var ad in actionDetails)
+                {
+                    actionSubMenu.Items.Add(CreateActionMenuItem(ad));
+                }
+            }
+            if (actionDetails == null)
+            {
+                actionSubMenu.Items.Add(new MenuItem { Header = "No actions available in clipboard", IsEnabled = false });
+            }
+        }
+
+        private void AddHistoryItems(ContextMenu ret)
+        {
+            var items = _clipboardStore.GetItems().ToList();
             var index = ret.Items.Count;
             if (!items.Any())
             {
@@ -153,6 +176,8 @@ namespace RexMingla.Clippy.WpfApplication
                 }
                 subMenu.Items.Insert(index, item);
             }
+            ret.Items.Add(new Separator());
+            ret.Items.Add(new MenuItem { Header = "History", IsEnabled = false });
         }
 
         private MenuItem CreateMenuItem(string header, RoutedEventHandler handler)
@@ -166,6 +191,15 @@ namespace RexMingla.Clippy.WpfApplication
         {
             var item = _translator.ToMenuItem(content);
             item.Click += SetClipboardContent;
+            return item;
+        }
+
+        private MenuItem CreateActionMenuItem(ActionDetail actionDetail)
+        {
+            var item = _translator.ToMenuItem(actionDetail.NewClipboardContent);
+            item.Header = actionDetail.ActionLabel;
+            item.DataContext = actionDetail;
+            item.Click += SetClipboardContentFromActionDetail;
             return item;
         }
 
@@ -189,6 +223,16 @@ namespace RexMingla.Clippy.WpfApplication
         {
             var item = e.Source as MenuItem;
             _clipboardManager.SetClipboardContent(item.DataContext as ClipboardContent);
+        }
+
+        private void SetClipboardContentFromActionDetail(object sender, RoutedEventArgs e)
+        {
+            var item = e.Source as MenuItem;
+            var detail = item.DataContext as ActionDetail;
+            if (detail != null)
+            {
+                _clipboardManager.SetClipboardContent(detail.NewClipboardContent);
+            }
         }
 
         public void OnLoaded(object sender, RoutedEventArgs e)

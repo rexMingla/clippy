@@ -1,5 +1,4 @@
-﻿using RexMingla.ClipboardManager;
-using RexMingla.DataModel;
+﻿using RexMingla.DataModel;
 using System.Collections.Generic;
 
 namespace RexMingla.Clippy.Config
@@ -7,6 +6,11 @@ namespace RexMingla.Clippy.Config
     public interface ISettingsListener
     {
         void OnSettingsChanged(Settings settings);
+    }
+
+    public interface IClipboardHistoryListener
+    {
+        void OnClipboardHistoryChanged(List<ClipboardContent> history);
     }
 
     public interface IConfigManager
@@ -18,5 +22,6 @@ namespace RexMingla.Clippy.Config
         void SaveConfig();
 
         void RegisterSettingsListener(ISettingsListener listener);
+        void RegisterClipboardHistoryListener(IClipboardHistoryListener listener);
     }
 }

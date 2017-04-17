@@ -1,6 +1,5 @@
 ﻿using Common.Logging;
 using Newtonsoft.Json;
-using RexMingla.ClipboardManager;
 using RexMingla.DataModel;
 using System;
 using System.Collections.Generic;
@@ -15,16 +14,15 @@ namespace RexMingla.Clippy.Config
 
         private readonly string _configFile;
         private readonly JsonConverter[] _converters;
-        private readonly IClipboardStore _clipboardStore;
         private readonly Config _config;
 
         private readonly List<ISettingsListener> _settingsListeners = new List<ISettingsListener>();
+        private readonly List<IClipboardHistoryListener> _historyListeners = new List<IClipboardHistoryListener>();
 
-        public ConfigManager(string configFile, IClipboardStore clipboardStore, params JsonConverter[] converters)
+        public ConfigManager(string configFile, params JsonConverter[] converters)
         {
             _configFile = configFile;
             _converters = converters;
-            _clipboardStore = clipboardStore;
             _config = Config.DefaultConfig;
         }
 
@@ -32,7 +30,6 @@ namespace RexMingla.Clippy.Config
         {
             try
             {
-                _config.ClipboardHistory = _clipboardStore.GetItems();
                 _log.Debug($"Saving to config file. {_config.ClipboardHistory.Count}(s) history items");
                 var json = JsonConvert.SerializeObject(_config, Formatting.Indented, _converters);
                 File.WriteAllText(_configFile, json);
@@ -64,7 +61,7 @@ namespace RexMingla.Clippy.Config
             if (_config.ClipboardHistory != content)
             {
                 _config.ClipboardHistory = content;
-                _clipboardStore.SetItems(content);
+                _historyListeners.ForEach(l => l.OnClipboardHistoryChanged(content));
             }
         }
 
@@ -105,6 +102,12 @@ namespace RexMingla.Clippy.Config
         {
             _settingsListeners.Add(listener);
             listener.OnSettingsChanged(_config.Settings);
+        }
+
+        public void RegisterClipboardHistoryListener(IClipboardHistoryListener listener)
+        {
+            _historyListeners.Add(listener);
+            listener.OnClipboardHistoryChanged(_config.ClipboardHistory);
         }
     }
 }

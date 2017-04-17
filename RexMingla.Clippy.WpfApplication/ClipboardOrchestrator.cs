@@ -14,7 +14,7 @@ namespace RexMingla.Clippy.WpfApplication
     /// <summary>
     ///  co-ordinates the click event right through to paste of selected content
     /// </summary>
-    public sealed class ClipboardOrchestrator : IClipboardOrchestrator, IDisposable
+    public sealed class ClipboardOrchestrator : IClipboardOrchestrator, IDisposable, IClipboardHistoryListener
     {
         private readonly IHotKeyManager _hotKeyManager;
         private readonly IClipboardManager _clipboardManager;

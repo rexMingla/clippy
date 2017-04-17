@@ -143,6 +143,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RexMingla.Action\RexMingla.Action.csproj">
+      <Project>{329089EA-F1F6-4EB5-BF9A-E86971A572E2}</Project>
+      <Name>RexMingla.Action</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RexMingla.ClipboardManager\RexMingla.ClipboardManager.csproj">
       <Project>{87B8FF1B-ACC4-467E-A0BE-CA5B073B7616}</Project>
       <Name>RexMingla.ClipboardManager</Name>
