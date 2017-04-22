@@ -132,8 +132,8 @@ namespace RexMingla.Clippy.WpfApplication
         private void AddActions(ContextMenu ret)
         {
             var actionSubMenu = new MenuItem { Header = $"Actions", ToolTip = "You can manipulate the most recent content" };
-            ret.Items.Add(new Separator());
             ret.Items.Add(actionSubMenu);
+            ret.Items.Add(new Separator());
 
             var items = _clipboardStore.GetItems().ToList();
             List<ActionDetail> actionDetails = null;
@@ -145,7 +145,7 @@ namespace RexMingla.Clippy.WpfApplication
                     actionSubMenu.Items.Add(CreateActionMenuItem(ad));
                 }
             }
-            if (actionDetails == null)
+            if (actionDetails == null || !actionDetails.Any())
             {
                 actionSubMenu.Items.Add(new MenuItem { Header = "No actions available in clipboard", IsEnabled = false });
             }
